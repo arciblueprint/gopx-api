@@ -1,0 +1,88 @@
+openapi: 3.0.3
+servers:
+  - url: https://api.thegopxtoken.com
+    description: Live Server
+  - url: https://test-api.thegopxtoken.com
+    description: Test Server
+info:
+  contact:
+    name: Support
+    url: info@thegopxtoken.com
+  description: Game On Players API
+  license:
+    name: MIT
+    url: https://spdx.org/licenses/MIT
+  termsOfService: https://thegopxtoken.com/terms-and-conditions
+  title: Game On Players API
+  version: 1
+  x-apisguru-categories:
+    - collaboration
+    - developer_tools
+  x-logo:
+    url: https://thegopxtoken.com/wp-content/uploads/2022/03/gopx-logo.png
+  x-origin:
+    - format: openapi
+      url: https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json
+      version: "3.0"
+  x-providerName: github.com
+externalDocs:
+  description: Game On Players API
+  url: https://docs.github.com/rest/
+paths:
+  /balance:
+    get:
+      description: Return GOPX balance 
+      responses:
+        '200':
+          description: GOPX balance from user's wallet
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Balance'
+components:
+  schemas:
+    ErrorModel:
+      type: object
+      required:
+      - message
+      - code
+      properties:
+        message:
+          type: string
+        code:
+          type: integer
+          minimum: 100
+          maximum: 600
+    ExtendedErrorModel:
+      allOf:
+      - $ref: '#/components/schemas/ErrorModel'
+      - type: object
+        required:
+        - rootCause
+        properties:
+          rootCause:
+            type: string
+    GeneralError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    Balance:
+      type: object
+      properties:
+        balance:
+          type: string
+  responses:
+    NotFound:
+      description: Entity not found.
+    IllegalInput:
+      description: Illegal input for operation.
+    GeneralError:
+      description: General Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/GeneralError"
