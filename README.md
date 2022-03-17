@@ -1,1 +1,1 @@
-# gopx-api
+# GOPX API
