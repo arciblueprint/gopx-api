@@ -31,50 +31,106 @@ externalDocs:
 paths:
   /balance:
     get:
-      description: Return GOPX balance 
+      tags:
+        - Token
+      summary: Return GOPX Balance
+      description: Return GOPX Balance
       responses:
-        '200':
+        "200":
           description: GOPX balance from user's wallet
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Balance'
+                $ref: "#/components/schemas/Balance"
+              example:
+                $ref: "#/components/examples/balance"
+  /wallet:
+    get:
+      tags:
+        - Account
+      summary: Create GOPX Wallet
+      description: Create GOPX Wallet
+      responses:
+        "200":
+          description: GOPX wallet creation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Wallet"
+              example:
+                $ref: "#/components/examples/wallet"
+  /address:
+    get:
+      tags:
+        - Account
+      summary: Create GOPX Wallet Address
+      description: Create GOPX Wallet Address
+      responses:
+        "200":
+          description: GOPX wallet address
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Address"
+              example:
+                $ref: "#/components/examples/address"
+  /private-key:
+    post:
+      tags:
+        - Account
+      summary: Create GOPX Private Key 
+      description: Create GOPX Private Key 
+      responses:
+        "200":
+          description: GOPX Private Key
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateKey"
+              example:
+                $ref: "#/components/examples/key"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mnemonic: 
+                  type: string
 components:
   schemas:
-    ErrorModel:
-      type: object
-      required:
-      - message
-      - code
-      properties:
-        message:
-          type: string
-        code:
-          type: integer
-          minimum: 100
-          maximum: 600
-    ExtendedErrorModel:
-      allOf:
-      - $ref: '#/components/schemas/ErrorModel'
-      - type: object
-        required:
-        - rootCause
-        properties:
-          rootCause:
-            type: string
-    GeneralError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
     Balance:
       type: object
       properties:
         balance:
           type: string
+    Wallet:
+      type: object
+      properties:
+        address:
+          type: string
+        secret:
+          type: string
+    Address:
+      type: object
+      properties:
+        address:
+          type: string
+    PrivateKey:
+      type: object
+      properties:
+        key:
+          type: string
+  examples:
+    address:
+      address: "0xa7673161CbfE0116A4De9E341f8465940c2211d4"
+    balance:
+      balance: "0"
+    wallet:
+      address: "NTAESFCB3WOD7SAOL42KSPVARLB3JFA3MNX3AESWHYVT2RMYDVZI6YLG4Y"
+      secret: "NBYMCVEEDFYV3TPWVRE6APE7PKHUJD4XAKXCKNCLKGUXOC3LFNJGZQCJCRA53HB7ZAHF6NFJH2QIVQ5USQNWG35QCJLD4KZ5IWMB24Q"
+    key:
+      key: "cTmS2jBWXgFaXZ2xG9jhn67TiyTshnMp3UedamzEhGm6BZV1vLgQ"
   responses:
     NotFound:
       description: Entity not found.
