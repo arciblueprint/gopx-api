@@ -44,6 +44,20 @@ paths:
                 $ref: "#/components/schemas/Balance"
               example:
                 $ref: "#/components/examples/balance"
+  /approve:
+    post:
+      tags:
+        - Token
+      summary: Approve Spend GOPX 
+      description: Approve a certain amount to be transfered/spent from another smart contract 
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Approve"
+              example:
+                $ref: "#/components/examples/approve"
   /wallet:
     get:
       tags:
@@ -121,6 +135,13 @@ components:
       properties:
         key:
           type: string
+    Approve:
+      type: object
+      properties:
+        amount:
+          type: string
+        fromPrivateKey:
+          type: string
   examples:
     address:
       address: "0xa7673161CbfE0116A4De9E341f8465940c2211d4"
@@ -131,6 +152,8 @@ components:
       secret: "NBYMCVEEDFYV3TPWVRE6APE7PKHUJD4XAKXCKNCLKGUXOC3LFNJGZQCJCRA53HB7ZAHF6NFJH2QIVQ5USQNWG35QCJLD4KZ5IWMB24Q"
     key:
       key: "cTmS2jBWXgFaXZ2xG9jhn67TiyTshnMp3UedamzEhGm6BZV1vLgQ"
+    approve:
+      txId: "c83f8818db43d9ba4accfe454aa44fc33123d47a4f89d47b314d6748eb0e9bc9"
   responses:
     NotFound:
       description: Entity not found.
