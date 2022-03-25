@@ -2,8 +2,6 @@ openapi: 3.0.3
 servers:
   - url: https://lue1i6ic50.execute-api.us-east-1.amazonaws.com/generate-token-api
     description: Live Server
-  - url: https://test-api.thegopxtoken.com
-    description: Test Server
 info:
   contact:
     name: Support
