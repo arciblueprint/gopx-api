@@ -1,6 +1,6 @@
 openapi: 3.0.3
 servers:
-  - url: https://api.thegopxtoken.com
+  - url: https://lue1i6ic50.execute-api.us-east-1.amazonaws.com/generate-token-api
     description: Live Server
   - url: https://test-api.thegopxtoken.com
     description: Test Server
@@ -29,139 +29,76 @@ externalDocs:
   description: Game On Players API
   url: https://docs.github.com/rest/
 paths:
-  /balance:
-    get:
-      tags:
-        - Token
-      summary: Return GOPX Balance
-      description: Return GOPX Balance
-      responses:
-        "200":
-          description: GOPX balance from user's wallet
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Balance"
-              example:
-                $ref: "#/components/examples/balance"
   /approve:
     post:
-      tags:
-        - Token
-      summary: Approve Spend GOPX 
+      summary: Approve 
       description: Approve a certain amount to be transfered/spent from another smart contract 
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Approve"
-              example:
-                $ref: "#/components/examples/approve"
-  /wallet:
-    get:
-      tags:
-        - Account
-      summary: Create GOPX Wallet
-      description: Create GOPX Wallet
-      responses:
-        "200":
-          description: GOPX wallet creation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Wallet"
-              example:
-                $ref: "#/components/examples/wallet"
-  /address:
-    get:
-      tags:
-        - Account
-      summary: Create GOPX Wallet Address
-      description: Create GOPX Wallet Address
-      responses:
-        "200":
-          description: GOPX wallet address
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Address"
-              example:
-                $ref: "#/components/examples/address"
-  /private-key:
-    post:
-      tags:
-        - Account
-      summary: Create GOPX Private Key 
-      description: Create GOPX Private Key 
-      responses:
-        "200":
-          description: GOPX Private Key
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PrivateKey"
-              example:
-                $ref: "#/components/examples/key"
+      parameters:
+        - in : header
+          name : X-BM-KEY
+          schema: string
+          required: true 
+        - in : header
+          name : X-BM-SIGN
+          schmea : string
+          required: true
       requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
-                mnemonic: 
+                currency: 
                   type: string
-components:
-  schemas:
-    Balance:
-      type: object
-      properties:
-        balance:
-          type: string
-    Wallet:
-      type: object
-      properties:
-        address:
-          type: string
-        secret:
-          type: string
-    Address:
-      type: object
-      properties:
-        address:
-          type: string
-    PrivateKey:
-      type: object
-      properties:
-        key:
-          type: string
-    Approve:
-      type: object
-      properties:
-        amount:
-          type: string
-        fromPrivateKey:
-          type: string
-  examples:
-    address:
-      address: "0xa7673161CbfE0116A4De9E341f8465940c2211d4"
-    balance:
-      balance: "0"
-    wallet:
-      address: "NTAESFCB3WOD7SAOL42KSPVARLB3JFA3MNX3AESWHYVT2RMYDVZI6YLG4Y"
-      secret: "NBYMCVEEDFYV3TPWVRE6APE7PKHUJD4XAKXCKNCLKGUXOC3LFNJGZQCJCRA53HB7ZAHF6NFJH2QIVQ5USQNWG35QCJLD4KZ5IWMB24Q"
-    key:
-      key: "cTmS2jBWXgFaXZ2xG9jhn67TiyTshnMp3UedamzEhGm6BZV1vLgQ"
-    approve:
-      txId: "c83f8818db43d9ba4accfe454aa44fc33123d47a4f89d47b314d6748eb0e9bc9"
-  responses:
-    NotFound:
-      description: Entity not found.
-    IllegalInput:
-      description: Illegal input for operation.
-    GeneralError:
-      description: General Error
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/GeneralError"
+                amount: 
+                  type: string
+                destination: 
+                  type: string
+                address: 
+                  type: string
+                address_memo: 
+                  type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                properties:
+                  widthdraw_id:
+                    type: string
+  /price:
+    get:
+      summary: Get Price 
+      description: Get price for GOPX 
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                properties:
+                  symbol:
+                    type: string
+                  last_price:
+                    type: string
+                  quote_volume_24h:
+                    type: string
+                  base_volume_24h:
+                    type: string
+                  high_24h:
+                    type: string
+                  low_24h:
+                    type: string
+                  open_24h:
+                    type: string
+                  close_24h:
+                    type: string
+                  best_ask:
+                    type: string
+                  best_ask_size:
+                    type: string
+                  best_bid:
+                    type: string
+                  best_bid_size:
+                    type: string
+                  url:
+                    type: string
