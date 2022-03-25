@@ -40,6 +40,12 @@ paths:
           name : X-BM-SIGN
           schmea : string
           required: true
+        - in: header
+          name: client_id
+          schema: string
+        - in: header
+          name: secret_key
+          schema: string
       requestBody:
         content:
           application/json:
