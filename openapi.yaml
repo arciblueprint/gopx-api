@@ -6,7 +6,7 @@ info:
   contact:
     name: Support
     url: info@thegopxtoken.com
-  description: Game On Players API
+  description: "# Overview\n The endpoints used in this documents directly creates the necessary elements to interact with the GOPX token. \n\nThis includes: \n\n * creation of wallet \n* price of GOPX token \n* transferring of token"
   license:
     name: MIT
     url: https://spdx.org/licenses/MIT
