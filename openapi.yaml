@@ -29,17 +29,17 @@ externalDocs:
 paths:
   /register:
     post:
-      summary: Register User 
-      description: Register user and provide a new wallet for the user to get GOPX Token 
+      summary: Register User
+      description: Register user and provide a new wallet for the user to get GOPX Token
       requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
-                email: 
+                email:
                   type: string
-                password: 
+                password:
                   type: string
       responses:
         "200":
@@ -58,16 +58,22 @@ paths:
                         type: string
                       xpub:
                         type: string
+        "400":
+          $ref: "#/components/responses/bad_request"
+        "404":
+          $ref: "#/components/responses/not_found"
+        "503":
+          $ref: "#/components/responses/service_unavailable"
   /price:
     get:
-      summary: Get Price 
-      description: Get price for GOPX from Bitmart  
+      summary: Get Price
+      description: Get price for GOPX from Bitmart
       responses:
         "200":
           content:
             application/json:
               example:
-                $ref: "#/components/examples/price"  
+                $ref: "#/components/examples/price"
               schema:
                 properties:
                   symbol:
@@ -96,7 +102,23 @@ paths:
                     type: string
                   url:
                     type: string
+        "400":
+          $ref: "#/components/responses/bad_request"
+        "404":
+          $ref: "#/components/responses/not_found"
+        "503":
+          $ref: "#/components/responses/service_unavailable"
 components:
+  schemas:
+    basic-error:
+      description: Basic Error
+      properties:
+        documentation_url:
+          type: string
+        message:
+          type: string
+      title: Basic Error
+      type: object
   examples:
     register:
       address: "0xd333de227011ac27656e5f35e7d576827cdff5f2"
@@ -117,4 +139,36 @@ components:
       best_bid: "103.49"
       best_bid_size: "0.14"
       fluctuation: "+0.0159"
-      url: "https://www.bitmart.com/trade?symbol=GOPX_USDT"  
+      url: "https://www.bitmart.com/trade?symbol=GOPX_USDT"
+  responses:
+    bad_request:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/basic-error"
+      description: Bad Request
+    code_scanning_forbidden_write:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/basic-error"
+      description: Response if the repository is archived or if github advanced security is not enabled for this repository
+    not_found:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/basic-error"
+      description: Resource Not Found
+    service_unavailable:
+      content:
+        application/json:
+          schema:
+            properties:
+              code:
+                type: string
+              documentation_url:
+                type: string
+              message:
+                type: string
+            type: object
+      description: Service Unavailable
