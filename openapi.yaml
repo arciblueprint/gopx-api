@@ -1,113 +1,299 @@
 openapi: 3.0.3
 servers:
-  - url: http://54.157.246.38:3000
+  - url: 'http://54.157.246.38:3000'
     description: Live Server
 info:
   contact:
     name: Support
     url: info@thegopxtoken.com
-  description: "# Overview\n The endpoints used in this documents directly creates the necessary elements to interact with the GOPX token. \n\nThis includes: \n\n * creation of wallet \n* price of GOPX token \n* transferring of token"
+  description: |-
+    # Overview
+     The endpoints used in this documents directly creates the necessary elements to interact with the GOPX token. 
+
+    This includes: 
+
+     * creation of wallet 
+    * price of GOPX token 
+    * transferring of token
   license:
     name: MIT
-    url: https://spdx.org/licenses/MIT
-  termsOfService: https://thegopxtoken.com/terms-and-conditions
+    url: 'https://spdx.org/licenses/MIT'
+  termsOfService: 'https://thegopxtoken.com/terms-and-conditions'
   title: Game On Players API
   version: 1
   x-apisguru-categories:
     - collaboration
     - developer_tools
   x-logo:
-    url: https://thegopxtoken.com/wp-content/uploads/2022/03/gopx-logo.png
+    url: 'https://thegopxtoken.com/wp-content/uploads/2022/03/gopx-logo.png'
   x-origin:
     - format: openapi
-      url: https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json
-      version: "3.0"
+      url: 'https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json'
+      version: '3.0'
   x-providerName: github.com
 externalDocs:
   description: Game On Players API
-  url: https://docs.github.com/rest/
+  url: 'https://docs.github.com/rest/'
 paths:
-  /register:
+  /v1/price:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                x-examples:
+                  example-1:
+                    price: '$1,671.56'
+                properties:
+                  price:
+                    type: string
+                    minLength: 1
+                required:
+                  - price
+              examples:
+                example-1:
+                  value:
+                    price: '$1,671.56'
+      operationId: get-v1-price
+      description: Get the current price of GOPX token.
+  /v1/convert:
     post:
-      summary: Register User
-      description: Register user and provide a new wallet for the user to get GOPX Token
+      summary: ''
+      operationId: post-v1-convert
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  gopxToken:
+                    type: number
+                required:
+                  - gopxToken
+                x-examples:
+                  example-1:
+                    gopxToken: 0.5982399779847688
+              examples:
+                example-1:
+                  value:
+                    gopxToken: 0.5982399779847688
       requestBody:
         content:
           application/json:
             schema:
+              description: ''
+              type: object
+              properties:
+                amount:
+                  type: string
+                  minLength: 1
+              required:
+                - amount
+              x-examples:
+                example-1:
+                  amount: '1000'
+      description: Converts the input amount into amount in GOPX.
+  '/v1/balance/{id}':
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  balance:
+                    type: string
+                    minLength: 1
+                required:
+                  - balance
+                x-examples:
+                  example-1:
+                    balance: '9899998968001049999999999800'
+              examples:
+                example-1:
+                  value:
+                    balance: '9899998968001049999999999800'
+      operationId: get-v1-balance
+      description: Gets the GOPX balance of the wallet address.
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+  /v1/signup:
+    post:
+      summary: ''
+      operationId: post-v1-signup
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
               type: object
               properties:
                 email:
                   type: string
+                  minLength: 1
                 password:
                   type: string
+                  minLength: 1
+              required:
+                - email
+                - password
+              x-examples:
+                example-1:
+                  email: test@example.com
+                  password: test123
+      description: Sign up for the GOPX wallet.
+  /v1/buy:
+    post:
+      summary: ''
+      operationId: post-v1-buy
       responses:
-        "200":
+        '200':
+          description: OK
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: x-access-token
+        - schema:
+            type: string
+          in: header
+          name: x-access-secret
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                to:
+                  type: string
+                  minLength: 1
+                amount:
+                  type: number
+              required:
+                - to
+                - amount
+              x-examples:
+                example-1:
+                  to: '0x16646252F49B741991b0f733cD4d1B6225acF769'
+                  amount: 1
+      description: Converts USD to GOPX then sends to input wallet address.
+  /v1/wallet:
+    post:
+      summary: ''
+      operationId: post-v1-wallet
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
           content:
             application/json:
-              example:
-                $ref: "#/components/examples/register"
               schema:
+                description: ''
+                type: object
                 properties:
                   address:
                     type: string
-                  wallet:
-                    type: object
-                    properties:
-                      mnemonic:
-                        type: string
-                      xpub:
-                        type: string
-        "400":
-          $ref: "#/components/responses/bad_request"
-        "404":
-          $ref: "#/components/responses/not_found"
-        "503":
-          $ref: "#/components/responses/service_unavailable"
-  /price:
-    get:
-      summary: Get Price
-      description: Get price for GOPX from Bitmart
+                    minLength: 1
+                  privateKey:
+                    type: string
+                    minLength: 1
+                required:
+                  - address
+                  - privateKey
+                x-examples:
+                  example-1:
+                    address: '0x812aaB37142F1ee09fDb79DE726d4A0B93aA989A'
+                    privateKey: '0x031e4bd5560c04ecc66908f38deb0cea59ded465d26bd245515ec33e2000fde5'
+      description: Gets the walets address and private key.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: x-access-token
+        - schema:
+            type: string
+          in: header
+          name: x-access-secret
+  /v1/transfer:
+    post:
+      summary: ''
+      operationId: post-v1-transfer
       responses:
-        "200":
+        '200':
+          description: OK
           content:
             application/json:
-              example:
-                $ref: "#/components/examples/price"
               schema:
-                properties:
-                  symbol:
-                    type: string
-                  last_price:
-                    type: string
-                  quote_volume_24h:
-                    type: string
-                  base_volume_24h:
-                    type: string
-                  high_24h:
-                    type: string
-                  low_24h:
-                    type: string
-                  open_24h:
-                    type: string
-                  close_24h:
-                    type: string
-                  best_ask:
-                    type: string
-                  best_ask_size:
-                    type: string
-                  best_bid:
-                    type: string
-                  best_bid_size:
-                    type: string
-                  url:
-                    type: string
-        "400":
-          $ref: "#/components/responses/bad_request"
-        "404":
-          $ref: "#/components/responses/not_found"
-        "503":
-          $ref: "#/components/responses/service_unavailable"
+                description: ''
+                type: object
+                x-examples:
+                  example-1:
+                    address: '0x812aaB37142F1ee09fDb79DE726d4A0B93aA989A'
+                    privateKey: '0x031e4bd5560c04ecc66908f38deb0cea59ded465d26bd245515ec33e2000fde5'
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: x-access-token
+        - schema:
+            type: string
+          in: header
+          name: x-access-secret
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                from:
+                  type: string
+                  minLength: 1
+                to:
+                  type: string
+                  minLength: 1
+                amount:
+                  type: string
+                  minLength: 1
+                privateKey:
+                  type: string
+                  minLength: 1
+              required:
+                - from
+                - to
+                - amount
+                - privateKey
+              x-examples:
+                example-1:
+                  from: '0xd7b15E3fcB842004dFdB6D6BA738426474f1687B'
+                  to: '0xdEd2A8C163a4FB14b42E46934De1E6F5625447C6'
+                  amount: '3'
+                  privateKey: '0xd83b1430096449b68c598b83e3b7a907216e90d200c54cea09fffbcb4f04337b'
+      description: Transfer GOPX token from wallet to another.
 components:
   schemas:
     basic-error:
@@ -119,45 +305,25 @@ components:
           type: string
       title: Basic Error
       type: object
-  examples:
-    register:
-      address: "0xd333de227011ac27656e5f35e7d576827cdff5f2"
-      wallet:
-        mnemonic: glow can claim above worth daring endless topic obtain crash emotion outside cute toss scare lawn cheap involve infant donkey artwork deer plate agree
-        xpub: xpub6Ex6k3D8Qe1KyaSJFUnvqMt2fPsmcgow7pmtMC35jQgYx69dnAQWsE1yregARRdQxFkCUuiKwXzb4x8ht3x2obfgSiMn3aZgSBF7WjBQSfu
-    price:
-      symbol: "GOPX_USDT"
-      last_price: "105.08"
-      quote_volume_24h: "114144.6248"
-      base_volume_24h: "1096.74"
-      high_24h: "105.10"
-      low_24h: "102.13"
-      open_24h: "103.44"
-      close_24h: "105.08"
-      best_ask: "105.52"
-      best_ask_size: "14.56"
-      best_bid: "103.49"
-      best_bid_size: "0.14"
-      fluctuation: "+0.0159"
-      url: "https://www.bitmart.com/trade?symbol=GOPX_USDT"
+  examples: {}
   responses:
     bad_request:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/basic-error"
+            $ref: '#/components/schemas/basic-error'
       description: Bad Request
     code_scanning_forbidden_write:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/basic-error"
+            $ref: '#/components/schemas/basic-error'
       description: Response if the repository is archived or if github advanced security is not enabled for this repository
     not_found:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/basic-error"
+            $ref: '#/components/schemas/basic-error'
       description: Resource Not Found
     service_unavailable:
       content:
