@@ -294,6 +294,18 @@ paths:
                   amount: '3'
                   privateKey: '0xd83b1430096449b68c598b83e3b7a907216e90d200c54cea09fffbcb4f04337b'
       description: Transfer GOPX token from wallet to another.
+  /v1/health:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: |-
+            {
+              health: "OK"
+            }
+      operationId: get-v1-health
+      description: Pings the API to check if connection could be established.
 components:
   schemas:
     basic-error:
