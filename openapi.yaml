@@ -1,6 +1,6 @@
 openapi: 3.0.3
 servers:
-  - url: 'http://54.157.246.38:3000'
+  - url: 'https://api.thegopxtoken.com'
     description: Live Server
 info:
   contact:
