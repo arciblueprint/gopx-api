@@ -171,6 +171,35 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  transaction_id:
+                    type: string
+                    minLength: 1
+                  amount:
+                    type: number
+                  wallet_address:
+                    type: string
+                    minLength: 1
+                required:
+                  - transaction_id
+                  - amount
+                  - wallet_address
+                x-examples:
+                  example-1:
+                    transaction_id: '0x4f62b4ad3c53dca6da638b0acccf9180d699befdf94708e4c3a9b01608945c39'
+                    amount: 7
+                    wallet_address: '0x16646252F49B741991b0f733cD4d1B6225acF769'
+              examples:
+                example-1:
+                  value:
+                    transaction_id: '0x4f62b4ad3c53dca6da638b0acccf9180d699befdf94708e4c3a9b01608945c39'
+                    amount: 7
+                    wallet_address: '0x16646252F49B741991b0f733cD4d1B6225acF769'
       parameters:
         - schema:
             type: string
@@ -187,18 +216,56 @@ paths:
               description: ''
               type: object
               properties:
-                to:
+                transaction_id:
                   type: string
                   minLength: 1
                 amount:
                   type: number
+                wallet_address:
+                  type: string
+                  minLength: 1
               required:
-                - to
+                - transaction_id
                 - amount
+                - wallet_address
               x-examples:
                 example-1:
-                  to: '0x16646252F49B741991b0f733cD4d1B6225acF769'
-                  amount: 1
+                  transaction_id: '0x4f62b4ad3c53dca6da638b0acccf9180d699befdf94708e4c3a9b01608945c39'
+                  amount: 7
+                  wallet_address: '0x16646252F49B741991b0f733cD4d1B6225acF769'
+            examples:
+              example-1:
+                value:
+                  wallet_address: '0x16646252F49B741991b0f733cD4d1B6225acF769'
+                  amount: 7
+                  email: sample@email
+                  custom_data: 20
+          application/xml:
+            schema:
+              description: ''
+              type: object
+              properties:
+                wallet_address:
+                  type: string
+                  minLength: 1
+                amount:
+                  type: number
+                email:
+                  type: string
+                  minLength: 1
+                custom_data:
+                  type: number
+              required:
+                - wallet_address
+                - amount
+                - email
+                - custom_data
+              x-examples:
+                example-1:
+                  wallet_address: '0x16646252F49B741991b0f733cD4d1B6225acF769'
+                  amount: 7
+                  email: sample@email
+                  custom_data: 20
       description: Converts USD to GOPX then sends to input wallet address.
   /v1/wallet:
     post:
@@ -250,10 +317,30 @@ paths:
               schema:
                 description: ''
                 type: object
+                properties:
+                  transaction_id:
+                    type: string
+                    minLength: 1
+                  amount:
+                    type: number
+                  wallet_address:
+                    type: string
+                    minLength: 1
+                required:
+                  - transaction_id
+                  - amount
+                  - wallet_address
                 x-examples:
                   example-1:
-                    address: '0x812aaB37142F1ee09fDb79DE726d4A0B93aA989A'
-                    privateKey: '0x031e4bd5560c04ecc66908f38deb0cea59ded465d26bd245515ec33e2000fde5'
+                    transaction_id: '0xfd25edba451e1ce537e268c83aba958017120d03c8159e5d2d2ec2ded33a3f05'
+                    amount: 7
+                    wallet_address: '0xdEd2A8C163a4FB14b42E46934De1E6F5625447C6'
+              examples:
+                example-1:
+                  value:
+                    transaction_id: '0xfd25edba451e1ce537e268c83aba958017120d03c8159e5d2d2ec2ded33a3f05'
+                    amount: 7
+                    wallet_address: '0xdEd2A8C163a4FB14b42E46934De1E6F5625447C6'
       parameters:
         - schema:
             type: string
@@ -273,26 +360,43 @@ paths:
                 from:
                   type: string
                   minLength: 1
-                to:
-                  type: string
-                  minLength: 1
-                amount:
+                wallet_address:
                   type: string
                   minLength: 1
                 privateKey:
                   type: string
                   minLength: 1
+                amount:
+                  type: number
+                email:
+                  type: string
+                  minLength: 1
+                custom_data:
+                  type: number
               required:
                 - from
-                - to
-                - amount
+                - wallet_address
                 - privateKey
+                - amount
+                - email
+                - custom_data
               x-examples:
                 example-1:
                   from: '0xd7b15E3fcB842004dFdB6D6BA738426474f1687B'
-                  to: '0xdEd2A8C163a4FB14b42E46934De1E6F5625447C6'
-                  amount: '3'
+                  wallet_address: '0xdEd2A8C163a4FB14b42E46934De1E6F5625447C6'
                   privateKey: '0xd83b1430096449b68c598b83e3b7a907216e90d200c54cea09fffbcb4f04337b'
+                  amount: 7
+                  email: sampl1e@email
+                  custom_data: 20
+            examples:
+              example-1:
+                value:
+                  from: '0xd7b15E3fcB842004dFdB6D6BA738426474f1687B'
+                  wallet_address: '0xdEd2A8C163a4FB14b42E46934De1E6F5625447C6'
+                  privateKey: '0xd83b1430096449b68c598b83e3b7a907216e90d200c54cea09fffbcb4f04337b'
+                  amount: 7
+                  email: sampl1e@email
+                  custom_data: 20
       description: Transfer GOPX token from wallet to another.
   /v1/health:
     get:
@@ -306,6 +410,104 @@ paths:
             }
       operationId: get-v1-health
       description: Pings the API to check if connection could be established.
+  /v1/login:
+    post:
+      summary: ''
+      operationId: post-v1-login
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  id:
+                    type: number
+                  email:
+                    type: string
+                    minLength: 1
+                  password:
+                    type: string
+                    minLength: 1
+                  token:
+                    type: string
+                    minLength: 1
+                  secret:
+                    type: string
+                    minLength: 1
+                  address:
+                    type: string
+                    minLength: 1
+                  privateKey:
+                    type: string
+                    minLength: 1
+                  createdAt:
+                    type: string
+                    minLength: 1
+                  updatedAt:
+                    type: string
+                    minLength: 1
+                required:
+                  - id
+                  - email
+                  - password
+                  - token
+                  - secret
+                  - address
+                  - privateKey
+                  - createdAt
+                  - updatedAt
+                x-examples:
+                  example-1:
+                    id: 21
+                    email: 002@example.com
+                    password: $2b$10$nANeGgIqODH6hu3zbcrz/e8JXiAByFoPpZNmnW.2lOXw5ilqmBkla
+                    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU2MDFhZWZkLTdiODktNDQ2Zi1iYmYzLTYyOTNmZWZlZWE0YiIsImlhdCI6MTY1MjI4NzU4NSwiZXhwIjoxNjgzODIzNTg1fQ.3SbuDzRSxesckY20N6uQNa9phfj_4W-OvlVxmZ-hCIk
+                    secret: bd11af72523239b7bf1a07f05a9ab92487aa9fee6d178acf39fe6d75d28e93b69736f3f978d8a671c64bf97d33fe9fcefc6c1f9c51c4dce73e4abd77ad295794d858e8e8e09f1f7812bec7444faf1e84f3fdaa7c9eeb62ab136e3ee348b9bc1ee5f8062446276efabecea54b3fabfd49201b13a2e1d27fe59a0c44dfad0cd435cced93535a4445619552c6bc84cdf3be8c31b8b6fc4ebce3e71dbe3e3b7ccdbfba8bc13d1953d42ffe81d80c078f1f454dd6dafe029f9165cf1c380a01a04c5e03f869ba839aca5baf83849cb4b3d1c76479e46f14a56af30733610f76138805cf3ad7ac63270fceefc24aeb0f214d5db02e98a98012e2948d8bbbb442067205
+                    address: '0xd8f7D541A529E54Ae58eb5F4C4c42D3577d75fA0'
+                    privateKey: '0xf20eee63285d9e00a06c3e449c1664bea11effc41b4677a1b47f103bb54cc64b'
+                    createdAt: '2022-05-11T16:46:25.000Z'
+                    updatedAt: '2022-05-11T16:46:25.000Z'
+              examples:
+                example-1:
+                  value:
+                    id: 21
+                    email: 002@example.com
+                    password: $2b$10$nANeGgIqODH6hu3zbcrz/e8JXiAByFoPpZNmnW.2lOXw5ilqmBkla
+                    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU2MDFhZWZkLTdiODktNDQ2Zi1iYmYzLTYyOTNmZWZlZWE0YiIsImlhdCI6MTY1MjI4NzU4NSwiZXhwIjoxNjgzODIzNTg1fQ.3SbuDzRSxesckY20N6uQNa9phfj_4W-OvlVxmZ-hCIk
+                    secret: bd11af72523239b7bf1a07f05a9ab92487aa9fee6d178acf39fe6d75d28e93b69736f3f978d8a671c64bf97d33fe9fcefc6c1f9c51c4dce73e4abd77ad295794d858e8e8e09f1f7812bec7444faf1e84f3fdaa7c9eeb62ab136e3ee348b9bc1ee5f8062446276efabecea54b3fabfd49201b13a2e1d27fe59a0c44dfad0cd435cced93535a4445619552c6bc84cdf3be8c31b8b6fc4ebce3e71dbe3e3b7ccdbfba8bc13d1953d42ffe81d80c078f1f454dd6dafe029f9165cf1c380a01a04c5e03f869ba839aca5baf83849cb4b3d1c76479e46f14a56af30733610f76138805cf3ad7ac63270fceefc24aeb0f214d5db02e98a98012e2948d8bbbb442067205
+                    address: '0xd8f7D541A529E54Ae58eb5F4C4c42D3577d75fA0'
+                    privateKey: '0xf20eee63285d9e00a06c3e449c1664bea11effc41b4677a1b47f103bb54cc64b'
+                    createdAt: '2022-05-11T16:46:25.000Z'
+                    updatedAt: '2022-05-11T16:46:25.000Z'
+      description: Login using email and password.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                email:
+                  type: string
+                  minLength: 1
+                password:
+                  type: string
+                  minLength: 1
+              required:
+                - email
+                - password
+              x-examples:
+                example-1:
+                  email: 002@example.com
+                  password: test123
+            examples:
+              example-1:
+                value:
+                  email: 002@example.com
+                  password: test123
 components:
   schemas:
     basic-error:
