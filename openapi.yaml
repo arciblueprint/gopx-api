@@ -103,6 +103,17 @@ paths:
                 example-1:
                   amount: '1000'
       description: Converts the input amount into amount in GOPX.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: x-access-token
+          required: true
+        - schema:
+            type: string
+          in: header
+          name: x-access-secret
+          required: true
   '/v1/balance/{id}':
     get:
       summary: Your GET endpoint
@@ -130,6 +141,17 @@ paths:
                     balance: '9899998968001049999999999800'
       operationId: get-v1-balance
       description: Gets the GOPX balance of the wallet address.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: x-access-token
+          required: true
+        - schema:
+            type: string
+          in: header
+          name: x-access-secret
+          required: true
     parameters:
       - schema:
           type: string
@@ -508,6 +530,64 @@ paths:
                 value:
                   email: 002@example.com
                   password: test123
+  '/v1/transactions/{tx}':
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  transactionFee:
+                    type: string
+                    minLength: 1
+                  gopxPrice:
+                    type: string
+                    minLength: 1
+                  gopxToken:
+                    type: string
+                    minLength: 1
+                  gopxTotal:
+                    type: string
+                    minLength: 1
+                  total:
+                    type: string
+                    minLength: 1
+                required:
+                  - transactionFee
+                  - gopxPrice
+                  - gopxToken
+                  - gopxTotal
+                  - total
+                x-examples:
+                  example-1:
+                    transactionFee: $0.13
+                    gopxPrice: $2.50
+                    gopxToken: '2'
+                    gopxTotal: $5.00
+                    total: $5.13
+      operationId: get-v1-transactions
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: x-access-token
+        - schema:
+            type: string
+          in: header
+          name: x-access-secret
+      description: Get transaction details based on transactionID
+    parameters:
+      - schema:
+          type: string
+        name: tx
+        in: path
+        required: true
 components:
   schemas:
     basic-error:
